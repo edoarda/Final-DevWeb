@@ -7,6 +7,15 @@ package crud;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.out;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +30,19 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "UpdateServlet", urlPatterns = {"/UpdateServlet"})
 public class UpdateServlet extends HttpServlet {
-
+    
+    Connection conexao;
+    boolean loginOK = false;
+    
+    @Override
+    public void init() throws ServletException {
+         try {
+             conexao = DriverManager.getConnection("jdbc:derby://localhost:1527/Eletroponei", "adm", "adm");
+        } catch (SQLException ex) {
+            Logger.getLogger(TablesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,23 +52,6 @@ public class UpdateServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UpdateServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UpdateServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-            //request.getParameter("eventName")
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -63,9 +67,34 @@ public class UpdateServlet extends HttpServlet {
             throws ServletException, IOException {
         
        String id = request.getParameter("id");
-        String table = request.getParameter("table");
+       String table = request.getParameter("table");
+       
+       request.getRequestDispatcher("/header.jsp").include(request, response);
+            out.println("<div class='container formy'>");
+            out.println("<h1>Editando " + id + " de " + table + "</h1>");
+       
+       try ( PreparedStatement sql = conexao.prepareStatement("SELECT * FROM " + table + "WHERE ID=" + id)) {
+            ResultSet resultado = sql.executeQuery();
+            ResultSetMetaData rmd = resultado.getMetaData();
+            int ccount = rmd.getColumnCount();
+            String name;
+            out.println("<form action='SubmitUpdate' method='post'>");
+            
+            for (int i = 1; i < ccount; i++) {
+                name = rmd.getColumnName(i);
+                out.println("<div class=\"form-group\">");
+                out.println("<label for='Input" + name + "'>Login</label>");
+                out.println("<input type='text' class='form-control' value='Input'" +
+                        name + "' placeholder='" + resultado.getString(i) + 
+                        "' required>");
+                out.println("</div>");
+            }
+     
+        } catch (SQLException ex) {
+            Logger.getLogger(TablesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        if (nome_user.equals("admin") && senha_user.equals("123")) {
+        /*if (nome_user.equals("admin") && senha_user.equals("123")) {
             HttpSession session = request.getSession();
             session.setAttribute("NomeUsuarioLogado", nome_user);
             session.setAttribute("Senha", senha_user);
@@ -75,7 +104,7 @@ public class UpdateServlet extends HttpServlet {
             resposta.forward(request, response);
         } else {
             response.sendRedirect("index.jsp");
-        }
+        }*/
     }
 
     @Override

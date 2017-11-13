@@ -63,7 +63,7 @@ public class TablesServlet extends HttpServlet {
             ResultSet resultado = sql.executeQuery();
             String[] pudim = {"Login", "Senha"};
           
-            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=ADMINISTRADOR'>Adicionar à ADMINISTRADOR</a></h5></center>");
+            out.println("<center><h5><a href='/Eletroponei/CreateServlet?table=ADMINISTRADOR'>Adicionar à ADMINISTRADOR</a></h5></center>");
             table_top(out, pudim);
             while(resultado.next()) {
                 out.println("<tr>");
@@ -95,7 +95,7 @@ public class TablesServlet extends HttpServlet {
             ResultSet resultado = sql.executeQuery();
             String[] pudim = {"Nome", "Descrição"};
             
-            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=CATEGORIA'>Adicionar à CATEGORIA</a></h5></center>");
+            out.println("<center><h5><a href='/Eletroponei/CreateServlet?table=CATEGORIA'>Adicionar à CATEGORIA</a></h5></center>");
             table_top(out, pudim);
             while(resultado.next()) {
                 out.println("<tr>");
@@ -141,7 +141,7 @@ public class TablesServlet extends HttpServlet {
                                 "Bandeira"};
             
             
-            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=CLIENTE'>Adicionar à CLIENTE</a></h5></center>");
+            out.println("<center><h5><a href='/Eletroponei/CreateServlet?table=CLIENTE'>Adicionar à CLIENTE</a></h5></center>");
             table_top(out, pudim);
             while(resultado.next()) {
                 out.println("<tr>");
@@ -209,7 +209,7 @@ public class TablesServlet extends HttpServlet {
             ResultSet resultado = sql.executeQuery();
             String[] pudim = {"ID", "IDCliente", "IDProduto"};
             
-            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=COMPRA'>Adicionar à COMPRA</a></h5></center>");
+            out.println("<center><h5><a href='/Eletroponei/CreateServlet?table=COMPRA'>Adicionar à COMPRA</a></h5></center>");
             table_top(out, pudim);
             while(resultado.next()) {
                 out.println("<tr>");
@@ -244,13 +244,13 @@ public class TablesServlet extends HttpServlet {
             ResultSet resultado = sql.executeQuery();
             String[] pudim = {"ID", "IDCategoria", "Nome", "Descrição", "Valor"};
             
-            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=PRODUTO'>Adicionar à PRODUTO</a></h5></center>");
+            out.println("<center><h5><a href='/Eletroponei/CreateServlet?table=PRODUTO'>Adicionar à PRODUTO</a></h5></center>");
             table_top(out, pudim);
             while(resultado.next()) {
                 out.println("<tr>");
                 out.println("<div>");
                 out.println("<td>");
-                out.println(resultado.getString("IDPRODUTO"));
+                out.println(resultado.getString("ID"));
                 out.println("</td>");
                 out.println("<td>");
                 out.println(resultado.getString("IDCATEGORIA"));
@@ -265,10 +265,10 @@ public class TablesServlet extends HttpServlet {
                 out.println(resultado.getString("VALOR"));
 		out.println("</td>");
                 out.println("<td>");
-                out.println("<a href='/Eletroponei/UpdateServlet?id="+ resultado.getString("IDPRODUTO") + "&table=PRODUTO'><button onclick='alert('PENIS')'>EDITAR</button></a>");
+                out.println("<a href='/Eletroponei/UpdateServlet?id="+ resultado.getString("ID") + "&table=PRODUTO'><button onclick='alert('Batata')'>EDITAR</button></a>");
                 out.println("</td>");
                 out.println("<td>");
-                out.println("<a href='/Eletroponei/DeleteServlet?id="+ resultado.getString("IDPRODUTO") + "&table=PRODUTO'>DELETAR</a>");
+                out.println("<a href='/Eletroponei/DeleteServlet?id="+ resultado.getString("ID") + "&table=PRODUTO'>DELETAR</a>");
                 out.println("</td>");
                 out.println("</div>");
                 out.println("</tr>");

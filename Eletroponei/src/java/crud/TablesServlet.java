@@ -62,8 +62,9 @@ public class TablesServlet extends HttpServlet {
             try ( PreparedStatement sql = conexao.prepareStatement("SELECT * FROM ADMINISTRADOR")) {
             ResultSet resultado = sql.executeQuery();
             String[] pudim = {"Login", "Senha"};
+          
+            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=ADMINISTRADOR'>Adicionar à ADMINISTRADOR</a></h5></center>");
             table_top(out, pudim);
-            
             while(resultado.next()) {
                 out.println("<tr>");
                 out.println("<div>");
@@ -93,8 +94,9 @@ public class TablesServlet extends HttpServlet {
         try ( PreparedStatement sql = conexao.prepareStatement("SELECT ID, DESCRICAO FROM CATEGORIA")) {
             ResultSet resultado = sql.executeQuery();
             String[] pudim = {"Nome", "Descrição"};
-            table_top(out, pudim);
             
+            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=CATEGORIA'>Adicionar à CATEGORIA</a></h5></center>");
+            table_top(out, pudim);
             while(resultado.next()) {
                 out.println("<tr>");
                 out.println("<div>");
@@ -137,8 +139,10 @@ public class TablesServlet extends HttpServlet {
                                 "Celular",
                                 "Cartão",
                                 "Bandeira"};
-            table_top(out, pudim);
             
+            
+            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=CLIENTE'>Adicionar à CLIENTE</a></h5></center>");
+            table_top(out, pudim);
             while(resultado.next()) {
                 out.println("<tr>");
                 out.println("<div>");
@@ -204,8 +208,9 @@ public class TablesServlet extends HttpServlet {
         try ( PreparedStatement sql = conexao.prepareStatement("SELECT * FROM COMPRA")) {
             ResultSet resultado = sql.executeQuery();
             String[] pudim = {"ID", "IDCliente", "IDProduto"};
-            table_top(out, pudim);
             
+            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=COMPRA'>Adicionar à COMPRA</a></h5></center>");
+            table_top(out, pudim);
             while(resultado.next()) {
                 out.println("<tr>");
                 out.println("<div>");
@@ -238,8 +243,9 @@ public class TablesServlet extends HttpServlet {
         try ( PreparedStatement sql = conexao.prepareStatement("SELECT * FROM PRODUTO")) {
             ResultSet resultado = sql.executeQuery();
             String[] pudim = {"ID", "IDCategoria", "Nome", "Descrição", "Valor"};
-            table_top(out, pudim);
             
+            out.println("<center><h5><a href='/EletroPonei/CreateServlet?table=PRODUTO'>Adicionar à PRODUTO</a></h5></center>");
+            table_top(out, pudim);
             while(resultado.next()) {
                 out.println("<tr>");
                 out.println("<div>");

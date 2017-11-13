@@ -104,18 +104,6 @@ public class UpdateServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(TablesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-       //PENIS
-        /*if (nome_user.equals("admin") && senha_user.equals("123")) {
-            HttpSession session = request.getSession();
-            session.setAttribute("NomeUsuarioLogado", nome_user);
-            session.setAttribute("Senha", senha_user);
-            session.setAttribute("logado", "ok");
-            
-            RequestDispatcher resposta = request.getRequestDispatcher("sucesso.jsp");
-            resposta.forward(request, response);
-        } else {
-            response.sendRedirect("index.jsp");
-        }*/
     }
 
     @Override

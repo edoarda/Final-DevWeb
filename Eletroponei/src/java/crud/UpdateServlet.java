@@ -66,29 +66,40 @@ public class UpdateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-       String id = request.getParameter("id");
-       String table = request.getParameter("table");
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        
+        String id = request.getParameter("id");
+        String table = request.getParameter("table");
        
-       request.getRequestDispatcher("/header.jsp").include(request, response);
+        request.getRequestDispatcher("/header.jsp").include(request, response);
             out.println("<div class='container formy'>");
-            out.println("<h1>Editando " + id + " de " + table + "</h1>");
+            out.println("<h1>Editando ID " + id + " de " + table + "</h1>");
        
-       try ( PreparedStatement sql = conexao.prepareStatement("SELECT * FROM " + table + "WHERE ID=" + id)) {
+        try ( PreparedStatement sql = conexao.prepareStatement("SELECT * FROM " + table + " WHERE ID = " + id)) {
             ResultSet resultado = sql.executeQuery();
             ResultSetMetaData rmd = resultado.getMetaData();
             int ccount = rmd.getColumnCount();
             String name;
             out.println("<form action='SubmitUpdate' method='post'>");
             
-            for (int i = 1; i < ccount; i++) {
+            while(resultado.next()) {
+                for (int i = 1; i <= ccount; i++) {
                 name = rmd.getColumnName(i);
-                out.println("<div class=\"form-group\">");
-                out.println("<label for='Input" + name + "'>Login</label>");
-                out.println("<input type='text' class='form-control' value='Input'" +
-                        name + "' placeholder='" + resultado.getString(i) + 
+                out.println("<div class='form-group'>");
+                out.println("<label for='Input" + name + "'>"+ name + "</label>");
+                out.println("<input type='text' class='form-control' name='Input" +
+                        name + "' placeholder='" + resultado.getString(name) + 
                         "' required>");
                 out.println("</div>");
+                }
             }
+            out.println("<div class='text-center'>");
+            out.println("<button type='submit' class='btn btn-primary form-btn'>Enviar</button>");
+            out.println("</div>");
+            out.println("</form></div>");
+            
+            request.getRequestDispatcher("/footer.jsp").include(request, response);
      
         } catch (SQLException ex) {
             Logger.getLogger(TablesServlet.class.getName()).log(Level.SEVERE, null, ex);

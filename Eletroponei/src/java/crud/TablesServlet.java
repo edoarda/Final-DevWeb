@@ -91,9 +91,9 @@ public class TablesServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(TablesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try ( PreparedStatement sql = conexao.prepareStatement("SELECT ID, DESCRICAO FROM CATEGORIA")) {
+        try ( PreparedStatement sql = conexao.prepareStatement("SELECT * FROM CATEGORIA")) {
             ResultSet resultado = sql.executeQuery();
-            String[] pudim = {"Nome", "Descrição"};
+            String[] pudim = {"ID", "Nome", "Descrição"};
             
             out.println("<center><h5><a href='/Eletroponei/CreateServlet?table=CATEGORIA'>Adicionar à CATEGORIA</a></h5></center>");
             table_top(out, pudim);
@@ -102,6 +102,9 @@ public class TablesServlet extends HttpServlet {
                 out.println("<div>");
                 out.println("<td>");
                 out.println(resultado.getString("ID"));
+                out.println("</td>");
+                out.println("<td>");
+                out.println(resultado.getString("NOME"));
                 out.println("</td>");
                 out.println("<td>");
                 out.println(resultado.getString("DESCRICAO"));

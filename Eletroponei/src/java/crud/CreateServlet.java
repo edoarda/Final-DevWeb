@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -70,6 +71,7 @@ public class CreateServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         String table = request.getParameter("table");
+        //request.setAttribute("table", table);
        
         request.getRequestDispatcher("/header.jsp").include(request, response);
             out.println("<div class='container formy'>");
@@ -81,9 +83,11 @@ public class CreateServlet extends HttpServlet {
             int ccount = rmd.getColumnCount();
             String name;
             out.println("<form action='SubmitCreate' method='post'>");
-            
-            while(resultado.next()) {
-                for (int i = 1; i <= ccount; i++) {
+            out.println("<div class='form-group'>");
+            out.println("<input type='hidden' name='table' value='"+ table + "'");
+            out.println("</div>");
+            //while(resultado.next()) {
+                for (int i = 2; i <= ccount; i++) {
                 name = rmd.getColumnName(i);
                 out.println("<div class='form-group'>");
                 out.println("<label for='Input" + name + "'>"+ name + "</label>");
@@ -91,13 +95,15 @@ public class CreateServlet extends HttpServlet {
                         name + "' required>");
                 out.println("</div>");
                 }
-            }
+            //}
             out.println("<div class='text-center'>");
             out.println("<button type='submit' class='btn btn-primary form-btn'>Enviar</button>");
             out.println("</div>");
             out.println("</form></div>");
             
             request.getRequestDispatcher("/footer.jsp").include(request, response);
+            //RequestDispatcher rd = getServletContext().getRequestDispatcher("/SubmitCreate");
+            //rd.include(request, response);
      
         } catch (SQLException ex) {
             Logger.getLogger(TablesServlet.class.getName()).log(Level.SEVERE, null, ex);

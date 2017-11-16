@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,18 +52,39 @@ public class SubmitCreate extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Enumeration<String> campos = request.getParameterNames();
+        //falta pegar a tabela certa
+        String table = request.getParameter(campos.nextElement());
+        String insert="INSERT INTO "+table+" VALUES(";
+        //request.getParameter(campos.nextElement());//QUANDO TIRAR O ID DO FORM TEM Q TIRAR ESSA LINHA
+        insert+="default";
+        String text;
+        while(campos.hasMoreElements()){
+            text = request.getParameter(campos.nextElement());
+            if(Pattern.matches("[0-9.]+", text))
+                insert+=", "+text;
+            else
+                insert+=", '"+text+"'";
+        }
+        insert+=")";
+        
         response.setContentType("text/html;charset=UTF-8");
+        request.getRequestDispatcher("/header.jsp").include(request, response);
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SubmitCreate</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SubmitCreate at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            out.println("<h1 class='formy'>Servlet SubmitCreate at " + request.getContextPath() + "</h1>");
+            try ( PreparedStatement sql = conexao.prepareStatement(insert)) {
+                sql.executeUpdate();
+                out.println("<h1 class='formy'>Inserido com Sucesso</h1>");
+                out.println("<a href='TablesServlet'> Voltar </a>");
+                request.getRequestDispatcher("/header.jsp").include(request, response);
+            }catch(SQLException ex) {
+                Logger.getLogger(TablesServlet.class.getName()).log(Level.SEVERE, null, ex);
+                out.println("<h1>Ocorreu erro na inserção</h1>");
+                out.println(insert+" ~~~~~~> "+ex);
+                out.println("</body>");
+                out.println("</html>");
+            }
         }
     }
 

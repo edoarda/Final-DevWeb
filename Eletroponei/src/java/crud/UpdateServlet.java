@@ -83,13 +83,20 @@ public class UpdateServlet extends HttpServlet {
             String name;
             out.println("<form action='SubmitUpdate' method='post'>");
             
+            out.println("<div class='form-group'>");
+            out.println("<input type='hidden' name='id' value='"+ id + "'");
+            out.println("</div>");
+            out.println("<div class='form-group'>");
+            out.println("<input type='hidden' name='table' value='"+ table + "'");
+            out.println("</div>");
+            
             while(resultado.next()) {
-                for (int i = 1; i <= ccount; i++) {
+                for (int i = 2; i <= ccount; i++) {
                 name = rmd.getColumnName(i);
                 out.println("<div class='form-group'>");
                 out.println("<label for='Input" + name + "'>"+ name + "</label>");
                 out.println("<input type='text' class='form-control' name='Input" +
-                        name + "' placeholder='" + resultado.getString(name) + 
+                        name + "' value='" + resultado.getString(name) + 
                         "' required>");
                 out.println("</div>");
                 }

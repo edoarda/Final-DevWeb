@@ -43,13 +43,12 @@ public class VerificarLogin extends HttpServlet {
             throws ServletException, IOException {
         String nome_user = request.getParameter("InputLogin");
         String senha_user = request.getParameter("InputSenha");
-        try ( PreparedStatement sql = conexao.prepareStatement("SELECT * FROM ADMINISTRADOR")){
+        try ( PreparedStatement sql = conexao.prepareStatement("SELECT * FROM ADMINISTRADOR WHERE LOGIN='"+ nome_user + "'")){
   
             ResultSet resultado = sql.executeQuery();
             resultado.next();
-            String nomeNome = resultado.getString("LOGIN");
             String senhaSenha = resultado.getString("SENHA");
-            if(senhaSenha.equals(senha_user) && nomeNome.equals(nome_user))
+            if(senhaSenha.equals(senha_user))
                 loginOK=true;
                 
         } catch (SQLException ex) {
